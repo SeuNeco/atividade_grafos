@@ -17,7 +17,7 @@ def listaDeAdjacencia (opcao, vertice):
 def ordemTamanho ():
 
     print("\nA ordem do grafo é: " + str(len(grafo)))
-    print("\nO tamanho do grafo é: " + str(sum(len(v) for v in grafo.values()) // 2))
+    print("O tamanho do grafo é: " + str(len(grafo.values())))
 
 def visualizar (valorado):
 
@@ -30,7 +30,7 @@ def visualizar (valorado):
 
 def addVerticeNaoValoradoNaoDirecionado ():
 
-    verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final").split()
+    verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final: ").split()
     if (verticeDestino) not in grafo[(verticeOrigem)]:
         grafo[(verticeOrigem)].append((verticeDestino))
     if (verticeOrigem) not in grafo[(verticeDestino)]:
@@ -38,13 +38,13 @@ def addVerticeNaoValoradoNaoDirecionado ():
 
 def addVerticeNaoValoradoDirecionado ():
 
-    verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final").split()
+    verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final: ").split()
     if (verticeDestino) not in grafo[(verticeOrigem)]:
         grafo[(verticeOrigem)].append((verticeDestino))
 
 def addVerticeValoradoNaoDirecionado ():
 
-    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor").split()
+    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
     if (verticeDestino) not in grafo[(verticeOrigem)]:
         grafo[(verticeOrigem)].append(((verticeDestino), int(valor)))
     if (verticeOrigem) not in grafo[int(verticeDestino)]:
@@ -52,7 +52,7 @@ def addVerticeValoradoNaoDirecionado ():
 
 def addVerticeValoradoDirecionado ():
 
-    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor").split()
+    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
     grafo[(verticeOrigem)].append(((verticeDestino), (valor)))
 
 def adicionarNovoVertice ():
@@ -97,7 +97,7 @@ def criarNaoValoradoNaoDirecionadoInput():
         grafo[input("Digite o nome do vértice: ")] = []
 
     for i in range(numeroArestas):
-        verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final").split()
+        verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final: ").split()
         if (verticeDestino) not in grafo[(verticeOrigem)]:
             grafo[(verticeOrigem)].append((verticeDestino))
         if (verticeOrigem) not in grafo[(verticeDestino)]:
@@ -136,7 +136,7 @@ def criarNaoValoradoDirecionadoInput():
         grafo[input("Digite o nome do vértice: ")] = []
 
     for i in range(numeroArestas):
-        verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final").split()
+        verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final: ").split()
         if (verticeDestino) not in grafo[(verticeOrigem)]:
             grafo[(verticeOrigem)].append((verticeDestino))
 
@@ -175,7 +175,7 @@ def criarValoradoNaoDirecionadoInput():
         grafo[input("Digite o nome do vértice: ")] = []
 
     for i in range(numeroArestas):
-        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor").split()
+        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
         if (verticeDestino) not in grafo[(verticeOrigem)]:
             grafo[(verticeOrigem)].append(((verticeDestino), int(valor)))
         if (verticeOrigem) not in grafo[int(verticeDestino)]:
@@ -213,7 +213,7 @@ def criarValoradoDirecionadoInput ():
         grafo[input("Digite o nome do vértice: ")] = []
 
     for i in range(numeroArestas):
-        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor").split()
+        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
         grafo[(verticeOrigem)].append(((verticeDestino), (valor)))
 
 def valoradoDirecionado (tipoUso):
@@ -263,7 +263,7 @@ def checkOption (valorado, direcionado):
 def menu (opcao, valorado, direcionado):
 
     while(1):
-        opcaoMenu = int(input("1 - ADICIONAR NOVO VERTICE\n"
+        opcaoMenu = int(input("\n1 - ADICIONAR NOVO VERTICE\n"
                           "2 - ADICIONAR NOVA ARESTA\n"
                           "3 - VISUALIZAR GRAFO\n"
                           "4 - ORDEM E TAMANHO\n"
@@ -302,7 +302,7 @@ def main ():
                          "2 - NÃO DIRECIONADO\n"
                          "valor: "))
 
-    valorado = int(input("\n1 - VALORADO\n"
+    valorado = int(input("1 - VALORADO\n"
                          "2 - NÃO VALORADO\n"
                          "valor: "))
 
