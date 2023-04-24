@@ -1,23 +1,56 @@
+import queue
+
 grafo = {}
 
-def listaDeAdjacencia (opcao, vertice):
 
-    match opcao:
-        case 1:
-            print("\nLista de vertices adjacentes de entrada: ")
-            print("\nLista de vertices adjacentes de saida: ")
-        case 2:
-            print("\nLista de vertices adjacentes de saida: ")
-        case 3:
-            print("\nLista de vertices adjacentes de entrada: ")
-            print("\nLista de vertices adjacentes de saida: ")
-        case 4:
-            print("\nLista de vertices adjacentes de saida: ")
+def grauDoVertice(vertice):
+    if vertice not in grafo:
+        return -1
+    if type(grafo[vertice]) is dict:  # grafo valorado
+        grau_entrada = sum(grafo[v][vertice] for v in grafo if vertice in grafo[v])
+        grau_saida = sum(grafo[vertice][v] for v in grafo[vertice])
+        return grau_entrada + grau_saida
+    else:  # grafo não valorado
+        return len(grafo[vertice])
+
+
+def verificaAdjacencia(vertice1, vertice2):
+    if vertice2 in grafo[vertice1]:
+        print(f"{vertice1} é adjacente a {vertice2}")
+    else:
+        print(f"{vertice1} não é adjacente a {vertice2}")
+
+
+def raioDiametro():
+    n = len(grafo)
+    diametro = float('inf')
+    for i in range(n):
+        dist = [-1] * n
+        dist[i] = 0
+        fila = queue.Queue()
+        fila.put(i)
+        while not fila.empty():
+            v = fila.get()
+            for w in grafo[v]:
+                if dist[w] == -1:
+                    dist[w] = dist[v] + 1
+                    fila.put(w)
+        raio = min(dist)
+        diametro = min(diametro, max(dist))
+    print("\nO raio do grafo é : "+ str(raio))
+    print("\nO diâmetro do grafo é: "+ str(diametro))
+
+
+def listaDeAdjacencia():
+    for i in grafo.keys():
+        print(str(i) + " -> " + str(grafo[i]))
+
 
 def ordemTamanho ():
 
     print("\nA ordem do grafo é: " + str(len(grafo)))
-    print("O tamanho do grafo é: " + str(len(grafo.values())))
+    print("\nO tamanho do grafo é: " + str(sum(len(v) for v in grafo.values()) // 2))
+
 
 def visualizar (valorado):
 
@@ -28,6 +61,7 @@ def visualizar (valorado):
         for i in grafo.keys():
             print(str(i) + " -> " + str(grafo[i][0]))
 
+
 def addVerticeNaoValoradoNaoDirecionado ():
 
     verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final: ").split()
@@ -36,28 +70,33 @@ def addVerticeNaoValoradoNaoDirecionado ():
     if (verticeOrigem) not in grafo[(verticeDestino)]:
         grafo[(verticeDestino)].append((verticeOrigem))
 
+
 def addVerticeNaoValoradoDirecionado ():
 
     verticeOrigem, verticeDestino = input("Digite o vertice inicial | vertice final: ").split()
     if (verticeDestino) not in grafo[(verticeOrigem)]:
         grafo[(verticeOrigem)].append((verticeDestino))
 
+
 def addVerticeValoradoNaoDirecionado ():
 
-    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
+    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor: ").split()
     if (verticeDestino) not in grafo[(verticeOrigem)]:
         grafo[(verticeOrigem)].append(((verticeDestino), int(valor)))
     if (verticeOrigem) not in grafo[int(verticeDestino)]:
         grafo[(verticeDestino)].append(((verticeOrigem), int(valor)))
 
+
 def addVerticeValoradoDirecionado ():
 
-    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
+    verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor: ").split()
     grafo[(verticeOrigem)].append(((verticeDestino), (valor)))
+
 
 def adicionarNovoVertice ():
 
     grafo[input("Digite o nome do vértice: ")] = []
+
 
 def adicionarNovaAresta (userOption):
     match userOption:
@@ -69,6 +108,7 @@ def adicionarNovaAresta (userOption):
             addVerticeNaoValoradoDirecionado()
         case 4:
             addVerticeNaoValoradoNaoDirecionado()
+
 
 def criarNaoValoradoNaoDirecionadoArquivo():
 
@@ -88,6 +128,7 @@ def criarNaoValoradoNaoDirecionadoArquivo():
         if (i[0]) not in grafo[(i[-1])]:
             grafo[(i[-1])].append((i[0]))
 
+
 def criarNaoValoradoNaoDirecionadoInput():
 
     numeroVertices = int(input("Digite o número de vértices: "))
@@ -103,6 +144,7 @@ def criarNaoValoradoNaoDirecionadoInput():
         if (verticeOrigem) not in grafo[(verticeDestino)]:
             grafo[(verticeDestino)].append((verticeOrigem))
 
+
 def naoValoradoNaoDirecionado(tipoUso):
 
     match tipoUso:
@@ -110,6 +152,7 @@ def naoValoradoNaoDirecionado(tipoUso):
             criarNaoValoradoNaoDirecionadoInput()
         case 2:
             criarNaoValoradoNaoDirecionadoArquivo()
+
 
 def criarNaoValoradoDirecionadoArquivo():
 
@@ -127,6 +170,7 @@ def criarNaoValoradoDirecionadoArquivo():
         if (i[-1]) not in grafo[(i[0])]:
             grafo[(i[0])].append((i[-1]))
 
+
 def criarNaoValoradoDirecionadoInput():
 
     numeroVertices = int(input("Digite o número de vértices: "))
@@ -140,6 +184,7 @@ def criarNaoValoradoDirecionadoInput():
         if (verticeDestino) not in grafo[(verticeOrigem)]:
             grafo[(verticeOrigem)].append((verticeDestino))
 
+
 def naoValoradoDirecionado(tipoUso):
 
     match tipoUso:
@@ -147,6 +192,7 @@ def naoValoradoDirecionado(tipoUso):
             criarNaoValoradoDirecionadoInput()
         case 2:
             criarNaoValoradoDirecionadoArquivo()
+
 
 def criarValoradoNaoDirecionadoArquivo():
 
@@ -166,6 +212,7 @@ def criarValoradoNaoDirecionadoArquivo():
         if ((i[0])) not in grafo[(i[-1])]:
             grafo[(i[1])].append(((i[0]), (i[-1])))
 
+
 def criarValoradoNaoDirecionadoInput():
 
     numeroVertices = int(input("Digite o número de vértices: "))
@@ -175,11 +222,12 @@ def criarValoradoNaoDirecionadoInput():
         grafo[input("Digite o nome do vértice: ")] = []
 
     for i in range(numeroArestas):
-        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
+        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor: ").split()
         if (verticeDestino) not in grafo[(verticeOrigem)]:
             grafo[(verticeOrigem)].append(((verticeDestino), int(valor)))
         if (verticeOrigem) not in grafo[int(verticeDestino)]:
             grafo[(verticeDestino)].append(((verticeOrigem), int(valor)))
+
 
 def valoradoNaoDirecionado(tipoUso):
 
@@ -188,6 +236,7 @@ def valoradoNaoDirecionado(tipoUso):
             criarValoradoNaoDirecionadoInput()
         case 2:
             criarValoradoNaoDirecionadoArquivo()
+
 
 def criarValoradoDirecionadoArquivo ():
 
@@ -204,6 +253,7 @@ def criarValoradoDirecionadoArquivo ():
     for i in arestas:
         grafo[(i[0])].append(((i[1]), (i[-1])))
 
+
 def criarValoradoDirecionadoInput ():
 
     numeroVertices = int(input("Digite o número de vértices: "))
@@ -213,8 +263,9 @@ def criarValoradoDirecionadoInput ():
         grafo[input("Digite o nome do vértice: ")] = []
 
     for i in range(numeroArestas):
-        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor da aresta: ").split()
+        verticeOrigem, verticeDestino, valor = input("Digite o vertice inicial | vertice final | valor: ").split()
         grafo[(verticeOrigem)].append(((verticeDestino), (valor)))
+
 
 def valoradoDirecionado (tipoUso):
 
@@ -223,6 +274,7 @@ def valoradoDirecionado (tipoUso):
             criarValoradoDirecionadoInput()
         case 2:
             criarValoradoDirecionadoArquivo()
+
 
 def criarGrafo (userOption):
 
@@ -239,6 +291,7 @@ def criarGrafo (userOption):
             naoValoradoDirecionado(tipoUso)
         case 4:
             naoValoradoNaoDirecionado(tipoUso)
+
 
 def checkOption (valorado, direcionado):
 
@@ -260,10 +313,11 @@ def checkOption (valorado, direcionado):
 
     return option
 
+
 def menu (opcao, valorado, direcionado):
 
     while(1):
-        opcaoMenu = int(input("\n1 - ADICIONAR NOVO VERTICE\n"
+        opcaoMenu = int(input("1 - ADICIONAR NOVO VERTICE\n"
                           "2 - ADICIONAR NOVA ARESTA\n"
                           "3 - VISUALIZAR GRAFO\n"
                           "4 - ORDEM E TAMANHO\n"
@@ -291,12 +345,13 @@ def menu (opcao, valorado, direcionado):
                 vertice = int(input("\nESCREVA O VERTICE QUE DESEJA SER CHECADO: "))
                 grauDoVertice(vertice)
             case 7:
-                vertice1, vertice2 = int(input("\nESCREVA OS VERTICES QUE DESEJA SER CHECADO: "))
+                vertice1, vertice2 = int(input("\nESCREVA OS VERTICES QUE VOCÊ DESEJA CHECAR: "))
                 verificaAdjacencia(vertice1, vertice2)
             case 8:
                 raioDiametro()
 
-def main ():
+
+def main():
 
     direcionado = int(input("1 - DIRECIONADO\n"
                          "2 - NÃO DIRECIONADO\n"
@@ -309,6 +364,7 @@ def main ():
     opcao = int(checkOption(valorado, direcionado))
     criarGrafo(opcao)
     menu(opcao, valorado, direcionado)
+
 
 if __name__ == '__main__':
     main()
